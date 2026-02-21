@@ -1,6 +1,7 @@
 using AutoMapper;
 using RecetArreAPI2.DTOs;
 using RecetArreAPI2.DTOs.Categorias;
+using RecetArreAPI2.DTOs.Ingredientes;
 using RecetArreAPI2.Models;
 
 namespace RecetArreAPI2.Mappings
@@ -16,6 +17,11 @@ namespace RecetArreAPI2.Mappings
             CreateMap<Categoria, CategoriaDto>();
             CreateMap<CategoriaCreacionDto, Categoria>();
             CreateMap<CategoriaModificacionDto, Categoria>();
+
+            // Ingrediente mappings
+            CreateMap<Ingrediente, IngredientesDtos>();
+            CreateMap<IngredienteCreacionDto, Ingrediente>();
+            CreateMap<IngredienteModificacionDto, Ingrediente>();
         }
     }
 }

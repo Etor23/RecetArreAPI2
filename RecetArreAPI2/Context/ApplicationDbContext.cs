@@ -12,6 +12,7 @@ namespace RecetArreAPI2.Context
         }
 
         public DbSet<Categoria> Categorias { get; set; }
+        public DbSet<Ingrediente> Ingredientes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -29,6 +30,38 @@ namespace RecetArreAPI2.Context
                 entity.Property(e => e.Descripcion)
                     .HasMaxLength(500)
                     .IsRequired(false);
+
+                entity.Property(e => e.CreadoUtc)
+                    .IsRequired()
+                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                // Relación con ApplicationUser
+                entity.HasOne(e => e.CreadoPorUsuario)
+                    .WithMany()
+                    .HasForeignKey(e => e.CreadoPorUsuarioId)
+                    .OnDelete(DeleteBehavior.SetNull)
+                    .IsRequired(false);
+
+                // Índices
+                entity.HasIndex(e => e.Nombre).IsUnique();
+                entity.HasIndex(e => e.CreadoPorUsuarioId);
+            });
+
+            builder.Entity<Ingrediente>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Nombre)
+                    .IsRequired()
+                    .HasMaxLength(20);
+
+                entity.Property(e => e.Descripcion)
+                    .HasMaxLength(500)
+                    .IsRequired(false);
+
+                entity.Property(e => e.UnidadMedida)
+                    .IsRequired(false)
+                    .HasMaxLength(50);
 
                 entity.Property(e => e.CreadoUtc)
                     .IsRequired()
