@@ -26,7 +26,7 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
 
 //Conexion a la base de datos
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 //Configurar JWT
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -46,17 +46,6 @@ builder.Services.AddControllers()
     .AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles)
     .AddNewtonsoftJson();
 
-//Configurar CORS
-builder.Services.AddCors(builder =>
-{
-    builder.AddPolicy("AllowAll", policy =>
-    {
-        policy.AllowAnyOrigin()
-              .AllowAnyMethod()
-              .AllowAnyHeader();
-    });
-});
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -67,7 +56,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseCors("AllowAll");
+
 app.UseAuthentication();
 app.UseAuthorization();
 

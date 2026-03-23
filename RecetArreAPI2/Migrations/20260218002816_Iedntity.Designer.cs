@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using RecetArreAPI2.Context;
@@ -11,9 +12,11 @@ using RecetArreAPI2.Context;
 namespace RecetArreAPI2.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260218002816_Iedntity")]
+    partial class Iedntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -204,6 +207,10 @@ namespace RecetArreAPI2.Migrations
                     b.Property<DateTime>("ModificadoUtc")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string>("NombreUsuario")
+                        .HasMaxLength(60)
+                        .HasColumnType("character varying(60)");
+
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
@@ -245,80 +252,6 @@ namespace RecetArreAPI2.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
-                });
-
-            modelBuilder.Entity("RecetArreAPI2.Models.Categoria", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("CreadoPorUsuarioId")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreadoUtc")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                    b.Property<string>("Descripcion")
-                        .HasMaxLength(500)
-                        .HasColumnType("character varying(500)");
-
-                    b.Property<string>("Nombre")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CreadoPorUsuarioId");
-
-                    b.HasIndex("Nombre")
-                        .IsUnique();
-
-                    b.ToTable("Categorias");
-                });
-
-            modelBuilder.Entity("RecetArreAPI2.Models.Ingrediente", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("CreadoPorUsuarioId")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreadoUtc")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                    b.Property<string>("Descripcion")
-                        .HasMaxLength(500)
-                        .HasColumnType("character varying(500)");
-
-                    b.Property<string>("Nombre")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)");
-
-                    b.Property<string>("UnidadMedida")
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CreadoPorUsuarioId");
-
-                    b.HasIndex("Nombre")
-                        .IsUnique();
-
-                    b.ToTable("Ingredientes");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -370,26 +303,6 @@ namespace RecetArreAPI2.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("RecetArreAPI2.Models.Categoria", b =>
-                {
-                    b.HasOne("RecetArreAPI2.Models.ApplicationUser", "CreadoPorUsuario")
-                        .WithMany()
-                        .HasForeignKey("CreadoPorUsuarioId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
-                    b.Navigation("CreadoPorUsuario");
-                });
-
-            modelBuilder.Entity("RecetArreAPI2.Models.Ingrediente", b =>
-                {
-                    b.HasOne("RecetArreAPI2.Models.ApplicationUser", "CreadoPorUsuario")
-                        .WithMany()
-                        .HasForeignKey("CreadoPorUsuarioId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
-                    b.Navigation("CreadoPorUsuario");
                 });
 #pragma warning restore 612, 618
         }

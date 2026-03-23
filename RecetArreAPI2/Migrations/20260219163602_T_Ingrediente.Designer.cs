@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using RecetArreAPI2.Context;
@@ -11,9 +12,11 @@ using RecetArreAPI2.Context;
 namespace RecetArreAPI2.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260219163602_T_Ingrediente")]
+    partial class T_Ingrediente
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -282,45 +285,6 @@ namespace RecetArreAPI2.Migrations
                     b.ToTable("Categorias");
                 });
 
-            modelBuilder.Entity("RecetArreAPI2.Models.Ingrediente", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("CreadoPorUsuarioId")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreadoUtc")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                    b.Property<string>("Descripcion")
-                        .HasMaxLength(500)
-                        .HasColumnType("character varying(500)");
-
-                    b.Property<string>("Nombre")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)");
-
-                    b.Property<string>("UnidadMedida")
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CreadoPorUsuarioId");
-
-                    b.HasIndex("Nombre")
-                        .IsUnique();
-
-                    b.ToTable("Ingredientes");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -373,16 +337,6 @@ namespace RecetArreAPI2.Migrations
                 });
 
             modelBuilder.Entity("RecetArreAPI2.Models.Categoria", b =>
-                {
-                    b.HasOne("RecetArreAPI2.Models.ApplicationUser", "CreadoPorUsuario")
-                        .WithMany()
-                        .HasForeignKey("CreadoPorUsuarioId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
-                    b.Navigation("CreadoPorUsuario");
-                });
-
-            modelBuilder.Entity("RecetArreAPI2.Models.Ingrediente", b =>
                 {
                     b.HasOne("RecetArreAPI2.Models.ApplicationUser", "CreadoPorUsuario")
                         .WithMany()

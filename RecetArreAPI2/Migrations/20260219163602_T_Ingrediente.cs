@@ -5,7 +5,7 @@
 namespace RecetArreAPI2.Migrations
 {
     /// <inheritdoc />
-    public partial class PorSiAcaso : Migration
+    public partial class T_Ingrediente : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

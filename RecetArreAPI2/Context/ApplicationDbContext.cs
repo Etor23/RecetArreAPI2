@@ -13,7 +13,6 @@ namespace RecetArreAPI2.Context
 
         public DbSet<Categoria> Categorias { get; set; }
         public DbSet<Ingrediente> Ingredientes { get; set; }
-        public DbSet<Receta> Recetas { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
