@@ -34,6 +34,7 @@ namespace RecetArreAPI2.Controllers
         public async Task<ActionResult<IEnumerable<Ingrediente>>> GetIngredientes()
         {
             var ingredientes = await context.Ingredientes
+                .OrderByDescending(x => x.Nombre)
                 .ToListAsync();
             return Ok(mapper.Map<List<IngredientesDtos>>(ingredientes));
 
