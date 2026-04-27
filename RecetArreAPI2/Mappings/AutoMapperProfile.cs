@@ -1,7 +1,10 @@
 using AutoMapper;
 using RecetArreAPI2.DTOs;
 using RecetArreAPI2.DTOs.Categorias;
+using RecetArreAPI2.DTOs.Comentarios;
 using RecetArreAPI2.DTOs.Ingredientes;
+using RecetArreAPI2.DTOs.Rating;
+using RecetArreAPI2.DTOs.Recetas;
 using RecetArreAPI2.Models;
 
 namespace RecetArreAPI2.Mappings
@@ -22,6 +25,23 @@ namespace RecetArreAPI2.Mappings
             CreateMap<Ingrediente, IngredientesDtos>();
             CreateMap<IngredienteCreacionDto, Ingrediente>();
             CreateMap<IngredienteModificacionDto, Ingrediente>();
+
+            // Receta mappings
+            CreateMap<Receta, RecetaDto>()
+                .ForMember(dest => dest.CategoriaIds, opt => opt.MapFrom(src => src.Categorias.Select(c => c.Id)))
+                .ForMember(dest => dest.IngredienteIds, opt => opt.MapFrom(src => src.Ingredientes.Select(i => i.Id)));
+            CreateMap<RecetaCreacionDto, Receta>();
+            CreateMap<RecetaModificacionDto, Receta>();
+
+            // Comentario mappings
+            CreateMap<Comentario, ComentarioDto>();
+            CreateMap<ComentarioCreacionDto, Comentario>();
+            CreateMap<ComentarioModificacionDto, Comentario>();
+
+            //Rating Mappings
+            CreateMap<Rating, RatingDTO>();
+            CreateMap<RatingCreacionDTO, Rating>();
+
         }
     }
 }

@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using RecetArreAPI2.Context;
+using RecetArreAPI2.Mappings;
 using RecetArreAPI2.Models;
 using Scalar.AspNetCore;
 using System.Text;
@@ -17,7 +19,7 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
 // Configurar AutoMapper
-builder.Services.AddAutoMapper(typeof(Program).Assembly);
+builder.Services.AddAutoMapper(cfg => cfg.AddProfile<AutoMapperProfile>());
 
 //Configurar la seguridad de Identity (Microsoft)
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
@@ -26,7 +28,8 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
 
 //Conexion a la base de datos
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+    //options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 //Configurar JWT
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -39,6 +42,16 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         IssuerSigningKey = new SymmetricSecurityKey(
         Encoding.UTF8.GetBytes(builder.Configuration["LlaveJWT"]!)),
         ClockSkew = TimeSpan.Zero
+    });
+    // Configurar CORS
+builder.Services.AddCors(options =>
+    {
+        options.AddPolicy("PermitirTodo", policy =>
+        {
+            policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+        });
     });
 
 //Ignorar Cyclos repetidos
@@ -56,6 +69,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("PermitirTodo");
 
 app.UseAuthentication();
 app.UseAuthorization();
